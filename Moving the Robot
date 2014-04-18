@@ -1,0 +1,91 @@
+Moving the Robot
+
+This sketch moves the robot back and forth repeatedly.
+Whenever you're writing code for the robot, make sure to include <ArduinoRobot.h> at the beginning of the sketch. This imports the necessary libraries to control the robot.
+There's no need to initialize the Robot object.
+To get the wheels to move, call Robot.motorsWrite(). motorsWrite() requires 2 arguments, the speed of the left motor, and the speed of the right motor. These values range from -255 to 255, where -255 is full reverse, and 255 is full speed forward. If you pass a value of 0, the motor will stop spinning the wheel.
+Once you've uploaded the sketch, unplug the USB cable for the robot. Whenever the USB is connected, the robot's motors are disengaged. Turn on the power and watch it move around!
+#include <ArduinoRobot.h> // import the robot library
+
+void setup(){
+  Robot.begin(); // initialize the library
+}
+
+void loop(){
+  // move forward for one second
+  Robot.motorsWrite(255,255);
+  delay(1000);
+
+  Robot.motorsWrite(0,0); // stop moving
+  delay(1000);
+
+  // move backwards for one second
+  Robot.motorsWrite(-255,-255);
+  delay(1000);
+
+  Robot.motorsWrite(0,0); // stop moving
+  delay(1000);
+}
+[Get Code]
+Read the buttons
+
+You'll be writing a sketch that prints the button presses to the screen.
+First, you need to include the Robot library.
+#include <ArduinoRobot.h>
+[Get Code]
+In setup(), start the robot and the screen.
+void setup(){
+  Robot.begin();
+  Robot.beginTFT();
+}
+[Get Code]
+In loop(), every 100ms, read the state of the buttons. If one is being pressed, write the name to the screen.
+void loop(){
+  Robot.debugPrint(Robot.keyboardRead(), 10, 10);
+  delay(100);
+}
+[Get Code]
+In the explore folder of the robot examples, there is a sketch called Logo, which incorporates this example with the robot movement from above.
+Change the motor speed with the potentiometer
+
+This lets you control the speed at which the robot moves in a straight line. By turning the knob and mapping the values to -255 to 255, you will set the speed and direction (forward or backwards) of the robot.
+First, you need to include the Robot library.
+#include <ArduinoRobot.h>
+[Get Code]
+In setup(), you must call Robot.begin() to initialize the robot's functions. Also call Robot.beginTFT() to initialize the screen.
+void setup(){
+
+  Robot.begin();
+  Robot.beginTFT();
+}
+[Get Code]
+In loop(), read the value of the potentiometer with Robot.knobRead(). Map its value (a number between 0 and 1023) to -255 to 255. Print this value to the screen, and use it to change the speed of the motors.
+void loop(){
+  int val=map(Robot.knobRead(),0,1023,-255,255);
+  Robot.debugPrint(val);
+  Robot.motorsWrite(val,val);
+  delay(10);
+}
+[Get Code]
+The robot's motor is disengaged when plugged in via USB. After programming the robot, unplug the USB cable and add batteries. Turn on the power switch and watch the robot move. Catch the robot, and change the knob to change its speed.
+Making some noise
+
+The robot has two different means of producing sounds. There's simple beeping, but the robot can also create more complex sounds by reading sequenced music off the SD card. In this example you'll start with the beeping. To learn about the more complex playback, see the Melody example in the learn folder.
+ First, you need to include the Robot library.
+#include <ArduinoRobot.h>
+[Get Code]
+In setup(), you must call Robot.begin() to initialize the robot's functions. Also call Robot.beginSpeaker() to initialize the speaker.
+void setup(){
+  Robot.begin();
+  Robot.beginSpeaker();
+}
+[Get Code]
+In loop(), you can call Robot.beep() to create a beep. There are three different kinds of beeping; a simple beep, a double beep, and a long beep.
+void loop() {
+  Robot.beep(BEEP_SIMPLE);
+  delay(1000);
+  Robot.beep(BEEP_DOUBLE);
+  delay(1000);
+  Robot.beep(BEEP_LONG);
+  delay(1000);
+}
